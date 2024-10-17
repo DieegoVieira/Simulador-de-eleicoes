@@ -1,0 +1,6 @@
+Numero de votos totais: 11
+Votos em branco: 0 (0.00%)
+Votos nulos: 0 (0.00%)
+Votos validos: 11 (100.00%)
+Chapa 1 - Diego: 6 votos (54.55% do total)
+Chapa 2 - Larissa: 5 votos (45.45% do total)

@@ -1,0 +1,12 @@
+Numero de votos totais: 11
+Votos em branco: 1 (9.09%)
+Votos nulos: 1 (9.09%)
+Votos validos: 9 (81.82%)
+Chapa 1 - Diego: 4 votos (36.36% do total)
+Chapa 2 - Larissa: 3 votos (27.27% do total)
+Chapa 3 - Antonio: 2 votos (18.18% do total)
+
+
+A CHAPA 1 VENCEU AS ELEICOES
+PREFEITO: Diego
+VICE-PREFEITO: Danilo
