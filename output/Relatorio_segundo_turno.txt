@@ -1,6 +1,11 @@
-Numero de votos totais: 11
-Votos em branco: 0 (0.00%)
-Votos nulos: 0 (0.00%)
-Votos validos: 11 (100.00%)
-Chapa 1 - Diego: 6 votos (54.55% do total)
-Chapa 2 - Larissa: 5 votos (45.45% do total)
+Numero de votos totais: 10
+Votos em branco: 2 (20.00%)
+Votos nulos: 1 (10.00%)
+Votos validos: 7 (70.00%)
+Chapa 55 - Ciclano: 4 votos (40.00% do total)
+Chapa 32 - Beltrano: 3 votos (30.00% do total)
+
+
+A CHAPA 55 VENCEU AS ELEICOES
+PREFEITO: Ciclano
+VICE-PREFEITO: Tio do Ciclano

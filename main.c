@@ -1,32 +1,3 @@
-/*
-REQUISITOS
-1- número de eleitores
-2- número de chapas a serem cadastradas
-    Nome do candidato (50)
-    número do candidato (1-99)
-    data de nascimento
-    nome do vice (50)
-3- Adicionar opção de parar de cadastrar chapas
-4- Votação
-    Votos não cadastrados como candidatos são nulos
-    0 é voto em branco
-    Exibir as opções de candidatos a votar
-    Confirmaçao de voto é necessários
-    Salvar o boletim de urna ao final
-        número de votos de cada chapa
-        votos em branco
-        votos nulos
-        votos válidos (soma das chapas)
-        votos totais
-        Incluir a porcentagem de votos válidos, totais e de cada chapa. Também dos votos nulos e brancos em relação ao total
-5- 2° turno - aviso prévio de segundo turno
-    Número mínimo de eleitores <= 10
-    Apresentar informação dos candidatos
-    Fim da votação opcional ou até o fim dos eleitores
-    estatiticas do turno igual ao primeiro
-    Se empate -> candidato mais velho
-*/
-
 #ifdef WIN32 
     #define limpa "cls"
 #else 
@@ -75,7 +46,7 @@ Chapa *criarChapa(Lista *list) {
     
     printf("\nNome do candidato: ");
     fgets(candidato->candidato, 50, stdin);
-    candidato->candidato[strcspn(candidato->candidato, "\n")] = '\0'; // Remove o \n ao final
+    candidato->candidato[strcspn(candidato->candidato, "\n")] = '\0';
    
     printf("\nNumero da chapa: ");
     scanf("%i", &candidato->numero);
@@ -103,7 +74,7 @@ Chapa *criarChapa(Lista *list) {
     }
     printf("\nAno: ");
     scanf("%i", &candidato->data[2]);
-    while(candidato->data[2] < 1908 || candidato->data[0] > 2024){
+    while(candidato->data[2] < 1908 || candidato->data[2] > 2024){
         printf("\nInsira o ano corretamente (entre 1908 e 2024): ");
         scanf("%i", &candidato->data[2]);
     }
@@ -112,7 +83,7 @@ Chapa *criarChapa(Lista *list) {
     // Ler o nome do vice
     printf("\nNome do vice: ");
     fgets(candidato->vice, 50, stdin);
-    candidato->vice[strcspn(candidato->vice, "\n")] = '\0'; // Remove o \n ao final
+    candidato->vice[strcspn(candidato->vice, "\n")] = '\0';
 
     candidato->votos = 0;
     numeroChapas += 1;
@@ -202,7 +173,7 @@ int atribuirVoto(Lista *list, int voto){
 }
 
 void relatorioTurno(Lista *list, int i, Chapa *campeao){
-     char nomeArquivo[30];
+    char nomeArquivo[30];
     if (i == 1) {
         sprintf(nomeArquivo, "Relatorio_primeiro_turno.txt");
     } else {
@@ -222,7 +193,9 @@ void relatorioTurno(Lista *list, int i, Chapa *campeao){
     for(int i = 0; i < numeroChapas; i++, aux = aux->prox){
         fprintf(arquivo, "Chapa %i - %s: %i votos (%.2f%% do total)\n", aux->candidato->numero, aux->candidato->candidato, aux->candidato->votos, ((double)aux->candidato->votos / total)*100);
     }
-    fprintf(arquivo, "\n\nA CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", campeao->numero, campeao->candidato, campeao->vice);
+    if(campeao->numero != 0){
+        fprintf(arquivo, "\n\nA CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", campeao->numero, campeao->candidato, campeao->vice);
+    }
     fclose(arquivo);
 }
 
@@ -269,9 +242,10 @@ int main(){
         printf("\nInsira duas ou mais chapas: ");
         scanf("%i", &chapasCadastrar);
     }
-    system(limpa);
-    printf("\n\nCADASTRAMENTO DE CHAPAS");
+    
     for(int i = 0; i < chapasCadastrar; i++){
+        system(limpa);
+        printf("\n\nCADASTRAMENTO DE CHAPAS");
         printf("\n\nCHAPA %i", i+1);
         candidato = criarChapa(chapas);
         if(candidato == NULL){
@@ -312,7 +286,7 @@ int main(){
     for(int i = 0; i < numeroChapas; i++, aux = aux->prox){
         if(((double)aux->candidato->votos / (double)total) * 100 > 50){
             relatorioTurno(chapas, 1, aux->candidato);
-            printf("\n\n A CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", aux->candidato->numero, aux->candidato->candidato, aux->candidato->vice);
+            printf("\n\nA CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", aux->candidato->numero, aux->candidato->candidato, aux->candidato->vice);
             liberaLista(chapas);
             return 0;
         }
@@ -328,7 +302,7 @@ int main(){
         }
     }
 
-    if(numEleitores <= 10){
+    if(numEleitores < 10){
         if(registro1->votos == registro2->votos){
             if(comparaDatas(registro1->data, registro2->data) < 0){
                 printf("\n\n A CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", registro1->numero, registro1->candidato, registro1->vice);
@@ -338,22 +312,20 @@ int main(){
                 printf("\n\n A CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", registro2->numero, registro2->candidato, registro2->vice);
                 relatorioTurno(chapas, 1, registro2);
             }
-            liberaLista(chapas);
-            free(registro1);
-            free(registro2);
-            return 0;
         }
-        for(Lista *aux = chapas; aux != NULL; aux = aux->prox){
-            if(aux->candidato->numero == registro1->numero){
-                printf("\n\nA CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", aux->candidato->numero, aux->candidato->candidato, aux->candidato->vice);
-                relatorioTurno(chapas, 1, aux->candidato);
-                free(registro1);
-                free(registro2);
-                liberaLista(chapas);
-                return 0;
-            }
+        else{
+            printf("\n\nA CHAPA %i VENCEU AS ELEICOES\nPREFEITO: %s\nVICE-PREFEITO: %s", registro1->numero, registro1->candidato, registro1->vice);
+            relatorioTurno(chapas, 1, aux->candidato);
         }
+        liberaLista(chapas);
+        free(registro1);
+        free(registro2);
+        return 0;
     }
+    Chapa *ninguem = (Chapa*)malloc(sizeof(Chapa));
+    ninguem->numero = 0;
+    relatorioTurno(chapas, 1, ninguem);
+    free(ninguem);
 
     system(limpa);
     printf("\nNENHUM CANDIDATO ALCANCOU MAIS DE 50%% DOS VOTOS!\nCANDIDATOS DO SEGUNDO TURNO:");
